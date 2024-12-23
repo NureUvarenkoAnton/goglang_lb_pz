@@ -1,0 +1,75 @@
+package profile
+
+import "NureUvarenkoAnton/unik_go_lb_4/internal/views/layouts"
+
+templ WalkForm(data WalkFormData) {
+	@layouts.Main() {
+		<div>
+			<form class="form">
+				@WalkersField(data.Walkers)
+				@PetsField(data.Pets)
+				@StartAtField()
+				@SubmitWalkButton()
+			</form>
+		</div>
+	}
+}
+
+templ WalkersField(walkers []IDContainer) {
+	<div class="field">
+		<label class="label">Walker</label>
+		<div class="control is-expanded">
+			<div class="select is-fullwidth">
+				<select name="walker_id">
+					for _, walker := range walkers {
+						<option value={ walker.ID }>{ walker.Name }</option>
+					}
+				</select>
+			</div>
+		</div>
+	</div>
+}
+
+templ PetsField(pets []IDContainer) {
+	<div class="field">
+		<label class="label">Pet</label>
+		<div class="control is-expanded">
+			<div class="select is-fullwidth">
+				<select name="pet_id">
+					for _, pet:= range pets {
+						<option value={ pet.ID }>{ pet.Name }</option>
+					}
+				</select>
+			</div>
+		</div>
+	</div>
+}
+
+templ AdditionalCommentsField() {
+	<div class="field">
+		<label class="label">Additional comments</label>
+		<textarea class="textarea"></textarea>
+	</div>
+}
+
+templ StartAtField() {
+	<div class="field">
+		<label class="label">Start at</label>
+		<div class="control has-icons-left">
+			<input name="start_time" class="input" type="datetime-local" placeholder="Select date and time"/>
+			<span class="icon is-small is-left">
+				<i class="fas fa-calendar-alt"></i>
+			</span>
+		</div>
+	</div>
+}
+
+templ SubmitWalkButton() {
+	<div class="field">
+		<button
+			class="button is-primary"
+			type="submit"
+			hx-post="/walk"
+		>Submit</button>
+	</div>
+}

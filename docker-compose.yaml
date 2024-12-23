@@ -1,0 +1,27 @@
+services:
+  # app:
+  #   build: .
+  #   env_file: ".env"
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: pet_walker
+      MYSQL_USER: root
+    ports:
+      - '3306:3306'
+    volumes:
+     - my-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+volumes:
+  my-db:

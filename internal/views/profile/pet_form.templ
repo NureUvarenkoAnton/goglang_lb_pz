@@ -1,0 +1,47 @@
+package profile
+
+import "NureUvarenkoAnton/unik_go_lb_4/internal/views/layouts"
+
+templ PetForm() {
+	@layouts.Main() {
+		<div>
+			<form class="form">
+				@NameField()
+				@AgeField()
+				@AdditionalInfoField()
+				@SubmitPetFormButton()
+			</form>
+		</div>
+	}
+}
+
+templ NameField() {
+	<div class="field">
+		<label class="label">Name</label>
+		<input class="input" name="name"/>
+	</div>
+}
+
+templ AgeField() {
+	<div class="field">
+		<label class="label">Age</label>
+		<input type="number" class="input" name="age"/>
+	</div>
+}
+
+templ AdditionalInfoField() {
+	<div class="field">
+		<label class="label">Additional Info</label>
+		<textarea class="textarea" name="additional_info"></textarea>
+	</div>
+}
+
+templ SubmitPetFormButton() {
+	<div class="field">
+		<button
+			class="button is-primary"
+			type="submit"
+			hx-post="/profile/pet"
+		>Submit</button>
+	</div>
+}

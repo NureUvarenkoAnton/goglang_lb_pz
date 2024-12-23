@@ -1,0 +1,41 @@
+package layouts
+
+templ Main() {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<title>Main</title>
+			<meta charset="UTF-8"/>
+			<meta
+				name="viewport"
+				content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+			/>
+			<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+			<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+			<script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
+			<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"/>
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"/>
+			<script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+          document.body.addEventListener("htmx:beforeSwap", function (evt) {
+            if (evt.detail.xhr.status === 409) {
+              evt.detail.shouldSwap = true;
+              evt.detail.isError = false
+            }
+
+            if (evt.detail.xhr.status === 204) {
+              evt.detail.shouldSwap = true;
+              evt.detail.isError = false
+            }
+          })
+        })
+      </script>
+		</head>
+		<body>
+			<div class="container">
+				{ children... }
+			</div>
+		</body>
+	</html>
+}

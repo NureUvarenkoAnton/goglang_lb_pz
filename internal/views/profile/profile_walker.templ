@@ -1,0 +1,110 @@
+package profile
+
+import "NureUvarenkoAnton/unik_go_lb_4/internal/views/layouts"
+import "fmt"
+
+templ ProfileWalkerkPage(data ProfildPageData) {
+	@layouts.Main() {
+		@UppepWalkPart(data.UserData)
+		@MiddleWalkerPart(data.Walks, data.PendingWalks)
+	}
+}
+
+templ UppepWalkPart(userData UserData) {
+	<section class="section">
+		<div class="columns is-centered">
+			<div class="column has-text-centered">
+				<div>
+					<p class="heading">Email</p>
+					<p class="title">{ userData.Email }</p>
+				</div>
+			</div>
+			<div class="column has-text-centered">
+				<div>
+					<p class="heading">Name</p>
+					<p class="title">{ userData.Name }</p>
+				</div>
+			</div>
+			<div class="column">
+				<button class="button is-danger" type="button" hx-post="/auth/logout" hx-swap="none">Log out</button>
+			</div>
+		</div>
+	</section>
+}
+
+templ MiddleWalkerPart(walkData []Walk, pendingWalkData []Walk) {
+	<section class="section">
+		<div class="columns">
+			<div class="column">
+				<h3 class="title is-4">Accepted walks</h3>
+				@WalksWalkerTable(walkData)
+			</div>
+			<div class="column">
+				<h3 class="title is-4">Pending walks</h3>
+				@PendingsWalkTable(pendingWalkData)
+			</div>
+		</div>
+	</section>
+}
+
+templ PendingsWalkTable(data []Walk) {
+	<div class="table-container">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>OwnerName</th>
+					<th>PetName</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody x-data="{}">
+				for i, walk := range data {
+					<tr id={ fmt.Sprintf("pending_table_raw-%v", i) }>
+						<td>{ walk.ID }</td>
+						<td>{ walk.OwnerName }</td>
+						<td>{ walk.PetName }</td>
+						<td>
+							<button
+								type="button"
+								class="button is-primary"
+								hx-put="/walk"
+								hx-vals={ fmt.Sprintf("js:{'walk_id': '%v', 'state': 'accepted'}", walk.ID) }
+								hx-target="#walks_table_body"
+								hx-swap="beforeend"
+								@click="setTimeout(() => $el.closest('tr').remove(), 100)"
+							>Accept</button>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}
+
+templ WalksWalkerTable(data []Walk) {
+	<div class="table-container">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Owner Name</th>
+					<th>Pet Name</th>
+				</tr>
+			</thead>
+			<tbody id="walks_table_body">
+				for _, walk := range data {
+					@WalksWalkerTableRow(walk)
+				}
+			</tbody>
+		</table>
+	</div>
+}
+
+templ WalksWalkerTableRow(walk Walk) {
+	<tr>
+		<td>{ walk.ID }</td>
+		<td>{ walk.OwnerName }</td>
+		<td>{ walk.PetName }</td>
+	</tr>
+}

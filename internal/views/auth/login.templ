@@ -1,0 +1,11 @@
+package auth
+
+templ LoginPage() {
+	@FormLayout(templ.Attributes{
+		"hx-post": "/auth/login",
+		"hx-swap": "none",
+	}, "Login") {
+		@EmailField()
+		@PasswordField()
+	}
+}

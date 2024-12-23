@@ -1,0 +1,111 @@
+package profile
+
+import "NureUvarenkoAnton/unik_go_lb_4/internal/views/layouts"
+
+templ ProfileDefaultPage(data ProfildPageData) {
+	@layouts.Main() {
+		@UppepDefaultPart(data.UserData)
+		@MiddleDefaultPart(data.Walks, data.Pets)
+	}
+}
+
+templ UppepDefaultPart(userData UserData) {
+	<section class="section">
+		<div class="columns is-centered">
+			<div class="column has-text-centered">
+				<div>
+					<p class="heading">Email</p>
+					<p class="title">{ userData.Email }</p>
+				</div>
+			</div>
+			<div class="column has-text-centered">
+				<div>
+					<p class="heading">Name</p>
+					<p class="title">{ userData.Name }</p>
+				</div>
+			</div>
+			<div class="column has-text-centered">
+				<p class="heading">The most walkable pet</p>
+				<p class="title">{ userData.TheMostWalkeblePet.Name }</p>
+			</div>
+			<div class="column">
+				<button class="button is-danger" type="button is-danger" hx-post="/auth/logout">Log out</button>
+			</div>
+		</div>
+	</section>
+}
+
+templ MiddleDefaultPart(walkData []Walk, petData []Pet) {
+	<section class="section">
+		<div class="columns">
+			<div class="column">
+				@WalksTableWithButton(walkData)
+			</div>
+			<div class="column">
+				@PetsTable(petData)
+			</div>
+		</div>
+	</section>
+}
+
+templ WalksTable(data []Walk) {
+	<div class="table-container">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>WalkerName</th>
+					<th>PetName</th>
+				</tr>
+			</thead>
+			<tbody id="walks_table_body">
+				for _, walk := range data {
+					@WalksTableRow(walk)
+				}
+			</tbody>
+		</table>
+	</div>
+}
+
+templ WalksTableRow(walk Walk) {
+	<tr>
+		<td>{ walk.ID }</td>
+		<td>{ walk.WalkerName }</td>
+		<td>{ walk.PetName }</td>
+	</tr>
+}
+
+templ WalksTableWithButton(data []Walk) {
+	<div>
+		<a href="/walk/form" class="button is-primary">Create Walk</a>
+	</div>
+	@WalksTable(data)
+}
+
+templ PetsTable(data []Pet) {
+	<div>
+		<a href="/profile/pet/form" class="button is-primary">Add pet +</a>
+	</div>
+	<div class="table-container">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Age</th>
+					<th>Additional info</th>
+				</tr>
+			</thead>
+			<tbody>
+				for _, pet := range data {
+					<tr>
+						<td>{ pet.ID }</td>
+						<td>{ pet.Name }</td>
+						<td>{ pet.Age }</td>
+						<td>{ pet.AdditionalInfo }</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}

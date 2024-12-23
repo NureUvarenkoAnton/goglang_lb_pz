@@ -1,0 +1,94 @@
+package auth
+
+import "NureUvarenkoAnton/unik_go_lb_4/internal/views/layouts"
+import "NureUvarenkoAnton/unik_go_lb_4/internal/core"
+
+templ RegisterPage() {
+	@FormLayout(templ.Attributes{
+		"hx-post": "/auth/register",
+		"hx-swap": "none",
+	}, "Register") {
+		@EmailField()
+		@NameField()
+		@UserTypeField()
+		@PasswordField()
+	}
+}
+
+templ FormLayout(hxAttrs templ.Attributes, buttonText string) {
+	@layouts.Main() {
+		<section class="section">
+			<div class="container">
+				<div class="columns is-centered">
+					<div class="column is-half">
+						<form
+							class="box"
+							{ hxAttrs... }
+						>
+							<div class="field">
+								{ children... }
+								<div class="control">
+									<button class="button is-primary">{ buttonText }</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+	}
+}
+
+templ EmailField() {
+	<div class="field">
+		<label class="label">Email</label>
+		<div class="control">
+			<input
+				class="input"
+				type="email"
+				name="email"
+				placeholder="Enter your email"
+			/>
+		</div>
+	</div>
+}
+
+templ NameField() {
+	<div class="field">
+		<label class="label">Name</label>
+		<div class="control">
+			<input
+				class="input"
+				name="name"
+				type="name"
+				placeholder="Enter your name"
+			/>
+		</div>
+	</div>
+}
+
+templ PasswordField() {
+	<div class="field">
+		<label class="label">Password</label>
+		<div class="control">
+			<input
+				class="input"
+				type="password"
+				name="password"
+				placeholder="Enter your password"
+			/>
+		</div>
+	</div>
+}
+
+templ UserTypeField() {
+	<div class="field">
+		<label class="label">User type</label>
+		<div class="select">
+			<select name="user_type">
+				<option value={ string(core.UsersUserTypeDefault) }>Pet owner</option>
+				<option value={ string(core.UsersUserTypeWalker) }>Walker</option>
+			</select>
+		</div>
+	</div>
+}

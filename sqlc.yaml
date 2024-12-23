@@ -1,0 +1,11 @@
+version: "2"
+sql: 
+  - engine: "mysql"
+    queries: "./migrations/queries"
+    schema: "./migrations/schema"
+    database:
+      uri: "server=127.0.0.1;uid=root;pwd=${MYSQL_ROOT_PASSWORD};database=pet_walker"
+    gen:
+      go:
+        package: "core"
+        out: "internal/core"
